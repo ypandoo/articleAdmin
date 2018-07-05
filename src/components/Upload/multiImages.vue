@@ -1,22 +1,17 @@
 <template>
-	<div class="upload-container">
+	<div class="upload-container" >
 		<el-upload class="image-uploader" :data="dataObj" drag :multiple="false" :show-file-list="false" action="http://upload.qiniup.com/"
 		  :on-success="handleImageScucess" :before-upload="beforeUpload">
 			<i class="el-icon-upload"></i>
-			<div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
+			<div class="el-upload__text">将图片(*.jpg,png,bmp,jpeg)拖到此处，或<em>点击上传</em></div>
 		</el-upload>
-		<div class="image-preview image-app-preview">
-			<div class="image-preview-wrapper" v-show="imageUrl.length>1">
-				<img :src="'http://p3ts1f5ty.bkt.clouddn.com/file.png'" style="width: 100px;
-    height: 100px;
-    left: 50%;
-    position: relative;
-    margin-left: -50px;
-    margin-top: 30px;">
+		<div class="image-preview image-app-preview" v-for="(image, index) in value" :key="image">
+			<div class="image-preview-wrapper" >
+				<img :src="image" style="">
 				<div class="image-preview-action">
-					<i @click="rmImage" class="el-icon-delete"></i>
+					<i @click="rmImage(index)" class="el-icon-delete"></i>
 				</div>
-					<p style="text-align:center">{{currentFile}}</p>
+				<!-- <p style="text-align:center">{{currentFile}}</p> -->
 			</div>
 		</div>
 		<!-- <div class="image-preview">
@@ -31,22 +26,22 @@
 </template>
 
 <script>
-import { getToken } from '@/api/qiniu'
-import { filenameFromURL } from '@/utils/index'
+import { getTokenNoName } from '@/api/qiniu'
+// import { filenameFromURL } from '@/utils/index'
 
 export default {
-  name: 'singleFileUpload',
+  name: 'multiImages',
   props: {
-    value: String
+    value: Array
   },
   computed: {
-    imageUrl() {
-      return this.value
-		},
+    // imageUrl() {
+    //   return this.value
+		// },
 		
-		currentFile(){
-			return filenameFromURL(this.imageUrl)
-		}
+		// currentFile(){
+		// 	return filenameFromURL(this.imageUrl)
+		// }
   },
   data() {
     return {
@@ -55,19 +50,21 @@ export default {
     }
   },
   methods: {
-    rmImage() {
-      this.emitInput('')
+    rmImage(index) {
+			this.value.splice (index, 1);
+			this.emitInput(this.value)
     },
     emitInput(val) {
       this.$emit('input', val)
     },
     handleImageScucess(file) {
-      this.emitInput(this.tempUrl)
+			this.value.push(this.tempUrl)
+			this.emitInput(this.value)
     },
     beforeUpload(file) {
       const _self = this
       return new Promise((resolve, reject) => {
-        getToken({name: file.name}).then(response => {
+        getTokenNoName({name: file.name}).then(response => {
 					// currentFile = file.name
           const key = response.data.qiniu_key
           const token = response.data.qiniu_token

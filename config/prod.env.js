@@ -1,5 +1,5 @@
 module.exports = {
 	NODE_ENV: '"production"',
 	ENV_CONFIG: '"prod"',
-	BASE_API: '"http://www.pyonex.cc:5000/"'
+	BASE_API: '"http://118.24.49.106:5000/"'
 }

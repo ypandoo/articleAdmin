@@ -7,7 +7,7 @@
       <!-- <github-corner></github-corner> -->
       <div class="info-container">
         <span class="display_name">{{name}}</span>
-        <span style="font-size:20px;padding-top:20px;display:inline-block;">欢迎使用Pyonex网站后台管理系统</span>
+        <span style="font-size:20px;padding-top:20px;display:inline-block;">欢迎使用网站后台管理系统</span>
       </div>
     </div>
     <div>

@@ -7,7 +7,7 @@ router.post('/getToken', function(req, res) {
   var accessKey = '1lSgFC2W5FS4fVr4u0pLgm4JmUIbAYiOEaAVbUdS'
   var secretKey = 'IqEjro62qfpv3SZ1LtFmT4i-80hRXpfpJZ6dt6nt'
   var mac = new qiniu.auth.digest.Mac(accessKey, secretKey)
-  var bucket = 'pyonex2'
+  var bucket = 'qiongjie2'
   
   var filename = req.body.name;
   if(!filename)
@@ -23,7 +23,7 @@ router.post('/getToken', function(req, res) {
   var putPolicy = new qiniu.rs.PutPolicy(options)
   var uploadToken = putPolicy.uploadToken(mac)
 
-  res.json({ 'qiniu_token': uploadToken, 'qiniu_key': filename, 'qiniu_url': 'http://p3ts1f5ty.bkt.clouddn.com/' + filename })
+  res.json({ 'qiniu_token': uploadToken, 'qiniu_key': filename, 'qiniu_url': 'http://pb8evo3jr.bkt.clouddn.com/' + filename })
 })
 
 router.post('/getTokenNoName', function(req, res) {
@@ -31,7 +31,7 @@ router.post('/getTokenNoName', function(req, res) {
   var secretKey = 'IqEjro62qfpv3SZ1LtFmT4i-80hRXpfpJZ6dt6nt'
   var mac = new qiniu.auth.digest.Mac(accessKey, secretKey)
   var uid = uuidV1()
-  var bucket = 'pyonex2'
+  var bucket = 'qiongjie2'
 
   // 简单上传凭证
   var options = {
@@ -41,7 +41,7 @@ router.post('/getTokenNoName', function(req, res) {
   var putPolicy = new qiniu.rs.PutPolicy(options)
   var uploadToken = putPolicy.uploadToken(mac)
 
-  res.json({ 'qiniu_token': uploadToken, 'qiniu_key': uid, 'qiniu_url': 'http://p3ts1f5ty.bkt.clouddn.com/' + uid })
+  res.json({ 'qiniu_token': uploadToken, 'qiniu_key': uid, 'qiniu_url': 'http://pb8evo3jr.bkt.clouddn.com/' + uid })
 })
 
  module.exports = router

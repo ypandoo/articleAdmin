@@ -5,54 +5,8 @@
       <sticky :className="'sub-navbar '+postForm.status">
         <template v-if="fetchSuccess">
 
-          <!-- <router-link style="margin-right:15px;" v-show='isEdit' :to="{ path:'create-form'}">
-            <el-button type="info">创建form</el-button>
-          </router-link> -->
-
-          <!-- <el-dropdown trigger="click">
-            <el-button plain>{{!postForm.comment_disabled?'评论已打开':'评论已关闭'}}
-              <i class="el-icon-caret-bottom el-icon--right"></i>
-            </el-button>
-            <el-dropdown-menu class="no-padding" slot="dropdown">
-              <el-dropdown-item>
-                <el-radio-group style="padding: 10px;" v-model="postForm.comment_disabled">
-                  <el-radio :label="true">关闭评论</el-radio>
-                  <el-radio :label="false">打开评论</el-radio>
-                </el-radio-group>
-              </el-dropdown-item>
-            </el-dropdown-menu>
-          </el-dropdown> -->
-
-          <!-- <el-dropdown trigger="click">
-            <el-button plain>平台
-              <i class="el-icon-caret-bottom el-icon--right"></i>
-            </el-button>
-            <el-dropdown-menu class="no-border" slot="dropdown">
-              <el-checkbox-group v-model="postForm.platforms" style="padding: 5px 15px;">
-                <el-checkbox v-for="item in platformsOptions" :label="item.key" :key="item.key">
-                  {{item.name}}
-                </el-checkbox>
-              </el-checkbox-group>
-            </el-dropdown-menu>
-          </el-dropdown> -->
-
-          <!-- <el-dropdown trigger="click">
-            <el-button plain>
-              外链
-              <i class="el-icon-caret-bottom el-icon--right"></i>
-            </el-button>
-            <el-dropdown-menu class="no-padding no-border" style="width:300px" slot="dropdown">
-              <el-form-item label-width="0px" style="margin-bottom: 0px" prop="source_uri">
-                <el-input placeholder="请输入内容" v-model="postForm.source_uri">
-                  <template slot="prepend">填写url</template>
-                </el-input>
-              </el-form-item>
-            </el-dropdown-menu>
-          </el-dropdown> -->
-
           <el-button v-loading="loading" style="margin-left: 10px;" type="success" @click="submitForm()">发布
           </el-button>
-          <!-- <el-button v-loading="loading" type="warning" @click="draftForm">草稿</el-button> -->
 
         </template>
         <template v-else>
@@ -124,7 +78,7 @@
         <el-form-item style="margin-bottom: 40px;" label-width="100px" label="文章简介:" prop="content_short">
           <el-input type="textarea" class="article-textarea" :rows="1" autosize placeholder="请输入内容" v-model="postForm.content_short" >
           </el-input>
-          <span class="word-counter" v-show="contentShortLength">{{contentShortLength}}字</span>
+          <!-- <span class="word-counter" v-show="contentShortLength">{{contentShortLength}}字</span> -->
         </el-form-item>
 
 
@@ -135,15 +89,39 @@
         </div>
 
         <div style="margin-bottom: 20px;">
-          <el-form-item label-width="100px" label="上传文章附件:" prop="image_uri">
-          <Upload v-model="postForm.image_uri"></Upload>
+          <el-form-item label-width="100px" label="上传视频介绍:" prop="vedio">
+          <Upload v-model="postForm.vedio"></Upload>
           </el-form-item>
         </div>
+
+        <div style="margin-bottom: 20px;">
+          <el-form-item label-width="100px" label="上传汉语语音介绍:" prop="audio_zh">
+          <Upload v-model="postForm.audio_zh"></Upload>
+          </el-form-item>
+        </div>
+
+        <div style="margin-bottom: 20px;">
+          <el-form-item label-width="100px" label="上传藏语语音介绍:" prop="audio_zy">
+          <Upload v-model="postForm.audio_zy"></Upload>
+          </el-form-item>
+        </div>
+
+        <div style="margin-bottom: 20px;">
+          <el-form-item label-width="100px" label="上传英语语音介绍:" prop="audio_en">
+          <Upload v-model="postForm.audio_en"></Upload>
+          </el-form-item>
+        </div>
+
+        <div style="margin-bottom: 20px;">
+          <el-form-item label-width="100px" label="上传图片库:" prop="image_list">
+          <UploadImages v-model="postForm.image_list"></UploadImages>
+          </el-form-item>
+        </div>      
 
 
         <div class="editor-container">
           <el-form-item label-width="100px" label="文章正文:" prop="content">
-          <tinymce :height=500 ref="editor" v-model="postForm.content"></tinymce>
+          <tinymce :height="500" ref="editor" v-model="postForm.content"></tinymce>
           </el-form-item>
         </div>
       </div>
@@ -156,6 +134,7 @@
 import Tinymce from '@/components/Tinymce'
 import Upload from '@/components/Upload/singleFile'
 import UploadImage from '@/components/Upload/singleImage3'
+import UploadImages from '@/components/Upload/multiImages'
 import MDinput from '@/components/MDinput'
 import Multiselect from 'vue-multiselect'// 使用的一个多选框组件，element-ui的select不能满足所有需求
 import 'vue-multiselect/dist/vue-multiselect.min.css'// 多选框组件css
@@ -170,21 +149,21 @@ const defaultForm = {
   title: '', // 文章题目
   content: '', // 文章内容
   content_short: '', // 文章摘要
-  source_uri: '', // 文章外链
   image_uri: '', // 文章图片
   cover_url:'',
   type: '',
   author: '',
-  source_name: '', // 文章外部作者
+  vedio: '',
+  audio_en: '',
+  audio_zh: '',
+  audio_zy: '',
+  image_list: [],
   publish_date: new Date(), // 前台展示时间
-  id: undefined,
-  platforms: ['a-platform'],
-  comment_disabled: false
 }
 
 export default {
   name: 'articleDetail',
-  components: { Tinymce, MDinput, Upload, UploadImage, Multiselect, Sticky },
+  components: { Tinymce, MDinput, Upload, UploadImage, Multiselect, Sticky, UploadImages },
   props: {
     isEdit: {
       type: Boolean,
@@ -223,20 +202,14 @@ export default {
       fetchSuccess: true,
       loading: false,
       userLIstOptions: [],
-      platformsOptions: [
-        { key: 'a-platform', name: 'a-platform' },
-        { key: 'b-platform', name: 'b-platform' },
-        { key: 'c-platform', name: 'c-platform' }
-      ],
       typeOptions: {},
       rules: {
-        // image_uri: [{ required: true, validator: validateRequire }],
         title: [{ required: true, validator: validateRequire }],
         author: [{ required: true, validator: validateRequire }],
         type: [{ required: true, validator: validateRequire }],
         content: [{ required: true, validator: validateRequire }],
-        content_short: [{ required: true, validator: validateRequire }]
-        // source_uri: [{ validator: validateSourceUri, trigger: 'blur' }]
+        content_short: [{ required: true, validator: validateRequire }], 
+        publish_date: [{ required: true, validator: validateRequire }]
       }
     }
   },
@@ -270,6 +243,11 @@ export default {
           this.postForm.type = response.data.item.type
           this.postForm.publish_date = response.data.item.publish_date
           this.postForm.cover_url = response.data.item.cover_url
+          this.postForm.audio_zh = response.data.item.audio_zh
+          this.postForm.audio_zy = response.data.item.audio_zy
+          this.postForm.audio_en = response.data.item.audio_en
+          this.postForm.vedio = response.data.item.vedio
+          this.postForm.image_list = response.data.item.image_list
         }).catch(err => {
           this.fetchSuccess = false
           console.log(err)
@@ -292,7 +270,12 @@ export default {
               'author': self.postForm.author,
               'type': self.postForm.type,
               'publish_date':self.postForm.publish_date,
-              'cover_url': self.postForm.cover_url
+              'cover_url': self.postForm.cover_url,
+              "audio_zh" : self.postForm.audio_zh,
+              "audio_zy" : self.postForm.audio_zy,
+              "audio_en" : self.postForm.audio_en,
+              "vedio" : self.postForm.vedio,
+              "image_list" : self.postForm.image_list
             }
 
             // add new article
@@ -305,6 +288,7 @@ export default {
                   duration: 2000
                 })
                 this.postForm.status = 'published'
+                this.$router.push({path: '/article/list'})
               } else {
                 this.$message({
                   message: response.data.msg,
@@ -329,7 +313,12 @@ export default {
               'author': self.postForm.author,
               'type': self.postForm.type,
               'publish_date': self.postForm.publish_date,
-              'cover_url': self.postForm.cover_url
+              'cover_url': self.postForm.cover_url,
+              "audio_zh" : self.postForm.audio_zh,
+              "audio_zy" : self.postForm.audio_zy,
+              "audio_en" : self.postForm.audio_en,
+              "vedio" : self.postForm.vedio,
+              "image_list" : self.postForm.image_list
             }
 
             // add new article
@@ -342,6 +331,7 @@ export default {
                   duration: 2000
                 })
                 this.postForm.status = 'published'
+                 this.$router.push({path: '/article/list'})
               } else {
                 this.$message({
                   message: response.data.msg,

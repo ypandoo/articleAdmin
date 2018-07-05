@@ -38,7 +38,7 @@ app.use('/article', article)
 // db
 var mongoose = require('mongoose')
 require('express-mongoose')
-mongoose.connect('mongodb://localhost/pyonex')
+mongoose.connect('mongodb://localhost/qjtravel')
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

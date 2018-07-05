@@ -39,7 +39,11 @@ router.post('/add', function(req, res) {
   }
 
   const cover_url = req.body.cover_url
-
+  const image_list  = req.body.image_list
+  const audio_zh  = req.body.audio_zh
+  const audio_zy  = req.body.audio_zy
+  const audio_en  = req.body.audio_en
+  const vedio  = req.body.vedio
 
   var article = new Article({
     title: title,
@@ -47,6 +51,11 @@ router.post('/add', function(req, res) {
     url: url,
     type: type,
     author: author,
+    image_list : image_list,
+    audio_zh : audio_zh,
+    audio_zy : audio_zy,
+    audio_en : audio_en,
+    vedio : vedio,     
     publish_date: publish_date,
     cover_url: cover_url,
     content: content
@@ -100,6 +109,11 @@ router.post('/update', function(req, res) {
     return
   }
   const cover_url = req.body.cover_url
+  const image_list  = req.body.image_list
+  const audio_zh  = req.body.audio_zh
+  const audio_zy  = req.body.audio_zy
+  const audio_en  = req.body.audio_en
+  const vedio  = req.body.vedio
 
   Article.findOneAndUpdate({ _id: id }, {
     title: title,
@@ -108,6 +122,11 @@ router.post('/update', function(req, res) {
     content: content,
     author: author,
     publish_date: publish_date,
+    image_list : image_list,
+    audio_zh : audio_zh,
+    audio_zy : audio_zy,
+    audio_en : audio_en,
+    vedio : vedio,  
     cover_url: cover_url,
     type: type
   }, function(err, docs) {
